@@ -44,7 +44,7 @@ st.markdown(
         top: 0;
         left: 50%;
         transform: translateX(-50%);
-        background-color: white;
+        background-color: black;
         padding: 10px 20px;
         font-size: 48px;
         z-index: 1000;

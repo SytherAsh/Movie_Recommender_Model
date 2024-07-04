@@ -107,10 +107,6 @@ def get_movie_poster(movie_name, api_key):
 #! PAGE STARTS HERE
 #todo PAGE STARTS HERE
 
-
-movie_list = pickle.load(open('C:\\Users\\yashs\\Desktop\\ML\\Recommend\\movies.pkl','rb'))
-df=pd.read_csv("Final.csv")
-
 st.set_page_config(
     page_title="Review",
     page_icon="⛵",
