@@ -1,9 +1,15 @@
 import pandas as pd
 import streamlit as st
 import requests
-import function as fl
 import pickle
+# Inside function.py
+import sys
+# Assuming Search.py is in the parent directory
+sys.path.append('../')
+# Or use an absolute path
+# sys.path.append('/path/to/directory/where/Search.py/is/located')
 
+import function as fl  
 # print(pd.__versio n__)
 
 

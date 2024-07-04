@@ -1,12 +1,12 @@
 
 
 import pandas as pd
-import numpy as np
 import pickle
-import ast
+import requests
 import streamlit as st
 
 df=pd.read_csv("Final.csv")
+API_KEY = '96f7e2a4'
 
 
 movie_list = pickle.load(open('movies.pkl','rb'))

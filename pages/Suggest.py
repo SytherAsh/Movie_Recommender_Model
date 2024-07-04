@@ -3,7 +3,7 @@ import streamlit as st
 import requests
 from PIL import Image
 from io import BytesIO
-import function as fl
+import function as fl # type: ignore
 import pickle
 
 # print(pd.__version__)
