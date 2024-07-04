@@ -61,21 +61,23 @@ def filter_movies_by_type(df, input_list,column):
     return df[df[column].apply(lambda x: all(element in x for element in input_list))]
 
 
-def short_list(start_date,end_date,genre,Lang,countries):
-    filtered_df = df[df['year'].between(start_date, end_date)]
-    filtered_genre= filter_movies_by_type(filtered_df, genre,'genres')
-    filtered_lang= filter_movies_by_type(filtered_genre, Lang,'original_language')
-    
-
-    for i in countries:
-        x=filtered_lang.loc[filtered_lang['production_countries'] == i  ].title
-        
-        list_of_movies = x.values.tolist()
-    st.success("Start!")
-        
+def movie_button(list_of_movies):    
+    st.success("Start!")    
     for i in range(len(list_of_movies)):
         button_key = (f"Review{i}")
-        if st.button(f"{list_of_movies[i]}", key=button_key[i]):
+        if st.button(f"{list_of_movies[i]}", key=button_key):
             st.session_state.movie = list_of_movies[i]
             st. switch_page("pages/Review.py") 
     st.success("Done!")
+def short_list(start_date,end_date,genre,Lang,countries):
+    filtered_df = df[df['year'].between(start_date, end_date)]
+    filtered_genre= filter_movies_by_type(filtered_df, genre,'genres')
+    filtered_lang= filter_movies_by_type(filtered_genre, Lang,'original_language')    
+    filtered_coun= filter_movies_by_type(filtered_lang, countries,'production_countries')    
+    
+    # filtered_coun = filtered_lang[filtered_lang['production_countries'].apply(lambda x: any(country in x for country in countries))]
+    x=filtered_coun.title
+   
+    list_of_movies = x.values.tolist()
+    movie_button(list_of_movies)
+    

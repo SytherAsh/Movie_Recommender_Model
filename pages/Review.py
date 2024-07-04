@@ -127,9 +127,9 @@ st.markdown(
 )
 st.markdown('<h1 class="title">CineMatch 🎬</h1>', unsafe_allow_html=True)
 
-if "movie" not in st.session_state:
-    st.session_state.movie = None
-    movie=st.selectbox('Select a Movie',movie_list['title'].values)
+if "movie" not in st.session_state or st.session_state.movie is None:
+    # movie=st.selectbox('Select a Movie',movie_list['title'].values)
+    movie='Avatar'
 else:    
     movie=st.session_state.movie
     
@@ -141,6 +141,7 @@ else:
 rating = df.loc[df['title']==movie].vote_average.values[0]
 popularity =   df.loc[df['title']==movie].popularity.values[0]
 profit =   movie_list.loc[movie_list['title']==movie].Profit.values[0]
+budget =   movie_list.loc[movie_list['title']==movie].budget.values[0]
        
           
 
@@ -154,23 +155,66 @@ with col[0]:
             
         st.markdown("##### :orange[Popularity]", unsafe_allow_html=True)
         st.altair_chart(make_popularity_donut(popularity), use_container_width=True) 
-            
+             
     with migrations_col[1]:   
-        
-        if profit>0:           
-            # st.write(':green[Profit]')
+        with st.container(height=150,border=False):   
             st.markdown("##### :green[Profit]", unsafe_allow_html=True)
+            if profit>0:           
+                # st.write(':green[Profit]')
+                
+                st.markdown(
+                    """
+                    <style>
+                    .profit-box {
+                        border: 2px solid green;
+                        border-radius: 5px;
+                        padding: 10px;
+                        font-size: 20px;  /* Adjust the font size as needed */
+                        color: green;     /* Text color */
+                        background-color: #f0fdf0;  /* Light green background */
+                        font-weight: bold;
+                        text-align: center;
+                    }
+                    </style>
+                    """,
+                    unsafe_allow_html=True
+                            )
+                st.markdown(f'<div class="profit-box"> ${profit:,} M</div>', unsafe_allow_html=True)
+            else:
+                st.markdown("##### :red[Loss]", unsafe_allow_html=True)
+                
+                st.markdown(
+                    """
+                    <style>
+                    .profit-box {
+                        border: 2px solid red;
+                        border-radius: 5px;
+                        padding: 10px;
+                        font-size: 20px;  /* Adjust the font size as needed */
+                        color: red;     /* Text color */
+                        background-color: ##FFCCCC;  /* Light red    background */
+                        font-weight: bold;
+                        text-align: center;
+                    }
+                    </style>
+                    """,
+                    unsafe_allow_html=True
+                            )
+                st.markdown(f'<div class="profit-box"> ${profit:,} M</div>', unsafe_allow_html=True)
+        with st.container(height=150,border=False):    
+                            
+            st.markdown("##### :violet[Budget ]", unsafe_allow_html=True)
             
             st.markdown(
                 """
                 <style>
-                .profit-box {
-                    border: 2px solid green;
+                .budget-box {
+                    border: 2px solid violet;
                     border-radius: 5px;
                     padding: 10px;
                     font-size: 20px;  /* Adjust the font size as needed */
-                    color: green;     /* Text color */
-                    background-color: #f0fdf0;  /* Light green background */
+                    color: violet;     /* Text color */
+                    background-color: ##E6E6FA;  /* Light green background */
                     font-weight: bold;
                     text-align: center;
                 }
@@ -178,31 +222,17 @@ with col[0]:
                 """,
                 unsafe_allow_html=True
                         )
-            st.markdown(f'<div class="profit-box"> ${profit:,} M</div>', unsafe_allow_html=True)
-        else:
-            st.markdown("##### :red[Loss]", unsafe_allow_html=True)
-            
-            st.markdown(
-                """
-                <style>
-                .profit-box {
-                    border: 2px solid red;
-                    border-radius: 5px;
-                    padding: 10px;
-                    font-size: 20px;  /* Adjust the font size as needed */
-                    color: red;     /* Text color */
-                    background-color: ##FFCCCC;  /* Light red    background */
-                    font-weight: bold;
-                    text-align: center;
-                }
-                </style>
-                """,
-                unsafe_allow_html=True
-                        )
-            st.markdown(f'<div class="profit-box"> ${profit:,} M</div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="budget-box"> ${budget:,} M</div>', unsafe_allow_html=True)
+with col[0]: 
+    colu=st.columns((0.2,1,0.2))   
+    with colu[1]:
+        x=st.button("🎥 :rainbow[Similar Movies]",key="predict")
+        if x:
+            st.session_state.movie = movie
         
-            
-
+            st.switch_page("pages/Suggest.py")
+    
+                
 with col[1]:
     migrations_col = st.columns((0.2, 1, 0.2), gap='medium', vertical_alignment='top')
     with migrations_col[1]:
@@ -231,7 +261,7 @@ with col[2]:
         
         
         
-        st.write('Director: ',crew[0])
+        st.write('Director: ',crew)
         st.write('Cast: ',movie_list.loc[movie_list['title']==movie].cast.values[0][0])
         st.write('Production Company: ',prod_comp[0])
         st.write('Production Countries: ',prod_coun[0])

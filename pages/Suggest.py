@@ -2,7 +2,6 @@ import pandas as pd
 import streamlit as st
 import requests
 from PIL import Image
-from io import BytesIO
 import function as fl # type: ignore
 import pickle
 
@@ -36,52 +35,34 @@ def recommend(movie):
         Recommended_Movies.append(movie_list.iloc[i[0]].title)
     return Recommended_Movies , Recoomended_Movie_poster
 
+
+
+
+#! To make the text appear below the Header and close to the top of the page
 st.markdown(
     """
     <style>
-    .fixed-title {
-        position: fixed;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: black;
-        padding: 10px 20px;
-        font-size: 48px;
-        z-index: 1000;
-    }
-    .stApp {
-        margin-top: 60px; /* Adjust this value based on the height of your title */
-    }
-    /* Reset Streamlit's default padding/margin */
-    header, footer {
-        visibility: hidden;
+    .title {
+        text-align: center; /* Center align the title */
+        margin-top: -70px; /* Adjust negative margin to reduce space above */
+        padding-top: 20px; /* Add padding to maintain spacing */
     }
     </style>
     """,
     unsafe_allow_html=True
 )
-
-# # Your app title
-st.markdown('<div class="fixed-title">CineMatch 🎬</div>', unsafe_allow_html=True)
-
-#! To make the text appear below the Header and close to the top of the page
-# st.markdown(
-#     """
-#     <style>
-#     .title {
-#         text-align: center; /* Center align the title */
-#         margin-top: -70px; /* Adjust negative margin to reduce space above */
-#         padding-top: 20px; /* Add padding to maintain spacing */
-#     }
-#     </style>
-#     """,
-#     unsafe_allow_html=True
-# )
-
-
+st.markdown('<h1 class="title">CineMatch 🎬</h1>', unsafe_allow_html=True)
 st.title(":rainbow[Movie Similar To Selected]")
-option=st.selectbox('Select a Movie',movie_list['title'].values)
 
+# option=st.selectbox('Select a Movie',movie_list['title'].values)
+if st.button('Refresh'):
+    st.session_state.movie = None
+
+if "movie" not in st.session_state or st.session_state.movie is None :
+    option=st.selectbox('Select a Movie',movie_list['title'].values)
+else:    
+    option=st.session_state.movie
+    
 col = st.columns(1)
 
 

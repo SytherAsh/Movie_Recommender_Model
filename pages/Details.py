@@ -245,14 +245,27 @@ with col[2]:
         prod_comp=movie_list.loc[movie_list['title']==movie].production_companies.values[0]
         prod_coun=movie_list.loc[movie_list['title']==movie].production_countries.values[0]
         release=movie_list.loc[movie_list['title']==movie].year.values[0]
-        
-        
-        
-        st.write('Director: ',crew[0])
-        st.write('Cast: ',movie_list.loc[movie_list['title']==movie].cast.values[0][0])
+        col=st.columns((1,1))
+        with col[0]:
+            with st.container(height=50,border=False):
+                st.write('Director: ')
+            with st.container(height=50,border=False):
+                st.write('Release Year: ' )
+            with st.container(height=100,border=False):
+                st.write('Production Country')
+            
+            
+        with col[1]:    
+            with st.container():
+                if st.button(f"{crew}", key=crew[0]):
+                    st.write('Cast: ',crew)
+            with st.container():
+                if st.button(f"{release}", key=release):
+                    st.write('Release Year: ',release)
+            with st.container():
+                if st.button(f"{prod_coun}", key=prod_coun[0]):
+                    st.write('Production Countries: ',prod_coun[0])
         st.write('Production Company: ',prod_comp[0])
-        st.write('Production Countries: ',prod_coun[0])
-        st.write('Release Year: ',release   )
-        
-        
+        st.write('Crew : ',movie_list.loc[movie_list['title']==movie].cast.values[0][0],use_column_width=True)
+            
         

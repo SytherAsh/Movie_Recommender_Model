@@ -53,68 +53,80 @@ st.markdown(
 st.markdown('<h1 class="title">CineMatch 🎬</h1>', unsafe_allow_html=True)
 
 
-col = st.columns((2, 2,2,), gap='medium', vertical_alignment='top')
+row1 = st.columns((1, 1,1,), gap='small', vertical_alignment='top')
 
-
-with col[0]:
-    # option=st.selectbox('Select a Movie',movie_list['title'].values)
-    
-    with st.container(border=True,height=150):
-       st.write("HI")
-            
-
-with col[1]:
-    with st.container(border=True,height=300):
-                
-        year=fl.get_unique_elements(movie_list.year)
-        on = st.toggle("Activate Range Selection")
-        date=0
-        if on:
-            st.write(":green[Activated]")
-            start_date, end_date = st.select_slider(
-                "Select a range of year",
-                options=year,
-                value=(1916, 2015))
-            st.write(f"You selected from  :green[{start_date}]to :green[{end_date}]")
-        else:
-            date= st.select_slider(
-                "Select a Year",
-                options=year,
-                value=2016)
-            st.write(f"You selected from :green[{date}] ")
-
-with col[2]:
-        
+with row1[0]:
     genre=st.multiselect(
         'Genre:',
         options=fl.get_unique_elements(movie_list.genres),
         default=['Drama']
         )  
-
+with row1[1]:
     Lang=st.multiselect(
         'Language:',
         options=fl.get_unique_elements(movie_list.original_language),
         default=['English']
         )  
-
+with row1[2]:
     Countries=st.multiselect(
         'Countries:',
         options=fl.get_unique_elements(movie_list.production_countries),
         default=['United States of America']
         
         )  
+    
+    
+    # with st.container(border=True,height=300):
+    #     crew=st.multiselect(
+    #     'Director:',
+        
+    #     options=fl.get_unique_elements(movie_list.crew),
+    #     default=['Christopher Nolan'])
 
+    #     filtered_crew= fl.filter_movies_by_type(df, crew,'crew')
+    #     x=filtered_crew.title
+    #     list_of_movies = x.values.tolist() 
+    #     fl.movie_button(list_of_movies)    
+row2 = st.columns((0.3,0.7), gap='small', vertical_alignment='top')
 
-col = st.columns(1)
+with row2[0]:
+    on = st.toggle(" :orange[Deactivate Range Selection]")
+with row2[1]:
+    with st.container(border=True):
+        year=fl.get_unique_elements(movie_list.year)
+        date=0
+        if on:
+            st.write(":green[Activated]") 
+            date= st.select_slider(
+                "Select a Year",
+                options=year,
+                value=2016)
+        else:
+            start_date, end_date = st.select_slider(
+                "Select a range of year",
+                options=year,
+                value=(1916, 2015))
+            
+    if on:
+        st.write(f"You selected from :green[{date}] ") 
+    else:
+        st.write(f"You selected from  :green[{start_date}]  - :green[{end_date}]")  
+    
+row3 = st.columns(1)
 
-with col[0]:
+with row3[0]:
+
     st.markdown('###  :rainbow[Recommended Movies]', unsafe_allow_html=True)
     
-    with st.container(border=True,height=400):
-        if date ==0:
-            fl.short_list(start_date,end_date,genre,Lang,Countries)
-        else:
+    with st.container():
+        if date:
             fl.short_list(date,date,genre,Lang,Countries)
+        else:
+            fl.short_list(start_date,end_date,genre,Lang,Countries)
+            
+     
+           
+        
     
           
 # if st.button('GO'):
